@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="zh-TW" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Excel 樞紐分析表全攻略 | 銷售報表教學</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700&display=swap" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Noto Sans TC', 'sans-serif'],
+                    },
+                    colors: {
+                        excel: {
+                            50: '#f0fdf4',
+                            100: '#dcfce7',
+                            500: '#22c55e',
+                            600: '#16a34a', // Excel Green-ish
+                            700: '#15803d',
+                            800: '#166534',
+                            900: '#14532d',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .step-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+        }
+        .bg-grid-pattern {
+            background-image: linear-gradient(to right, #e2e8f0 1px, transparent 1px),
+                              linear-gradient(to bottom, #e2e8f0 1px, transparent 1px);
+            background-size: 20px 20px;
+        }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-700 font-sans antialiased">
+
+    <!-- Navbar -->
+    <nav class="bg-white/90 backdrop-blur-md border-b border-slate-200 fixed w-full z-50 top-0">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16 items-center">
+                <div class="flex items-center gap-2">
+                    <i data-lucide="sheet" class="text-excel-600 h-8 w-8"></i>
+                    <span class="font-bold text-xl tracking-tight text-slate-800">PivotMastery</span>
+                </div>
+                <div class="hidden md:flex space-x-8">
+                    <a href="#intro" class="text-slate-600 hover:text-excel-600 font-medium transition">基本觀念</a>
+                    <a href="#prep" class="text-slate-600 hover:text-excel-600 font-medium transition">資料準備</a>
+                    <a href="#category" class="text-slate-600 hover:text-excel-600 font-medium transition">類別分析</a>
+                    <a href="#month" class="text-slate-600 hover:text-excel-600 font-medium transition">月份趨勢</a>
+                    <a href="#troubleshoot" class="text-slate-600 hover:text-red-600 font-medium transition">常見錯誤</a>
+                </div>
+                <!-- Mobile Menu Button -->
+                <button id="mobile-menu-btn" class="md:hidden p-2 rounded-md text-slate-600 hover:bg-slate-100">
+                    <i data-lucide="menu"></i>
+                </button>
+            </div>
+        </div>
+        <!-- Mobile Menu -->
+        <div id="mobile-menu" class="hidden md:hidden bg-white border-t border-slate-200">
+            <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+                <a href="#intro" class="block px-3 py-2 text-slate-600 hover:bg-excel-50 hover:text-excel-700 rounded-md">基本觀念</a>
+                <a href="#prep" class="block px-3 py-2 text-slate-600 hover:bg-excel-50 hover:text-excel-700 rounded-md">資料準備</a>
+                <a href="#category" class="block px-3 py-2 text-slate-600 hover:bg-excel-50 hover:text-excel-700 rounded-md">類別分析</a>
+                <a href="#month" class="block px-3 py-2 text-slate-600 hover:bg-excel-50 hover:text-excel-700 rounded-md">月份趨勢</a>
+                <a href="#troubleshoot" class="block px-3 py-2 text-slate-600 hover:bg-red-50 hover:text-red-700 rounded-md">疑難排解</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <header id="intro" class="pt-32 pb-20 bg-gradient-to-br from-excel-50 to-white relative overflow-hidden">
+        <div class="absolute inset-0 bg-grid-pattern opacity-30 pointer-events-none"></div>
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center">
+            <div class="inline-flex items-center px-3 py-1 rounded-full bg-excel-100 text-excel-800 text-sm font-semibold mb-6">
+                <i data-lucide="sparkles" class="w-4 h-4 mr-2"></i> Excel 數據分析入門
+            </div>
+            <h1 class="text-4xl md:text-6xl font-extrabold text-slate-900 tracking-tight mb-6">
+                輕鬆搞定 <span class="text-excel-600">銷售報表</span> 樞紐分析
+            </h1>
+            <p class="text-lg md:text-xl text-slate-600 max-w-2xl mx-auto mb-10">
+                不再需要手動加總或使用複雜函數。透過樞紐分析表（Pivot Table），三分鐘內將雜亂的流水帳轉化為按「月份」與「類別」分類的專業洞察報表。
+            </p>
+            <div class="flex flex-col sm:flex-row justify-center gap-4">
+                <a href="#category" class="inline-flex items-center justify-center px-8 py-3 border border-transparent text-base font-medium rounded-lg text-white bg-excel-600 hover:bg-excel-700 transition shadow-lg shadow-excel-500/30">
+                    開始學習分析
+                    <i data-lucide="arrow-right" class="ml-2 h-5 w-5"></i>
+                </a>
+                <a href="#troubleshoot" class="inline-flex items-center justify-center px-8 py-3 border border-slate-300 text-base font-medium rounded-lg text-slate-700 bg-white hover:bg-slate-50 transition">
+                    解決報表錯誤
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Section: Data Prep (Crucial Step) -->
+    <section id="prep" class="py-20 bg-white border-b border-slate-100">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl font-bold text-slate-900">製作前的黃金法則</h2>
+                <p class="mt-4 text-slate-600">樞紐分析表跑不出來？90% 的原因都在原始資料格式錯誤。</p>
+            </div>
+
+            <div class="grid md:grid-cols-3 gap-8">
+                <!-- Rule 1 -->
+                <div class="p-6 bg-slate-50 rounded-2xl border border-slate-200 relative overflow-hidden group">
+                    <div class="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition">
+                        <i data-lucide="table" class="w-24 h-24 text-excel-600"></i>
+                    </div>
+                    <div class="w-12 h-12 bg-white rounded-xl shadow-sm flex items-center justify-center mb-4 text-excel-600">
+                        <i data-lucide="align-justify" class="w-6 h-6"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-slate-800 mb-2">單一標題列</h3>
+                    <p class="text-slate-600">資料的第一列必須是標題（如：日期、產品、金額）。<br><span class="text-red-500 font-bold">切勿使用雙層標題或合併儲存格。</span></p>
+                </div>
+                
+                <!-- Rule 2 -->
+                <div class="p-6 bg-slate-50 rounded-2xl border border-slate-200 relative overflow-hidden group">
+                    <div class="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition">
+                        <i data-lucide="database" class="w-24 h-24 text-excel-600"></i>
+                    </div>
+                    <div class="w-12 h-12 bg-white rounded-xl shadow-sm flex items-center justify-center mb-4 text-excel-600">
+                        <i data-lucide="ban" class="w-6 h-6"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-slate-800 mb-2">不能有空白列</h3>
+                    <p class="text-slate-600">資料中間不能有完全空白的列或欄，這會導致 Excel 判定範圍中斷，分析結果不完整。</p>
+                </div>
+
+                <!-- Rule 3 -->
+                <div class="p-6 bg-slate-50 rounded-2xl border border-slate-200 relative overflow-hidden group">
+                    <div class="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition">
+                        <i data-lucide="calendar-check" class="w-24 h-24 text-excel-600"></i>
+                    </div>
+                    <div class="w-12 h-12 bg-white rounded-xl shadow-sm flex items-center justify-center mb-4 text-excel-600">
+                        <i data-lucide="type" class="w-6 h-6"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-slate-800 mb-2">格式要正確</h3>
+                    <p class="text-slate-600">日期必須是真正的「日期格式」（如 2023/01/01），而非文字（如 '20230101）。否則無法按月分組。</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Tutorial 1: By Category -->
+    <section id="category" class="py-20 bg-slate-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex flex-col md:flex-row items-start gap-12">
+                <div class="md:w-1/2 sticky top-24">
+                    <span class="text-excel-600 font-bold tracking-wider uppercase text-sm">Case 01</span>
+                    <h2 class="text-3xl md:text-4xl font-bold text-slate-900 mt-2 mb-6">按「產品類別」分析銷售</h2>
+                    <p class="text-slate-600 mb-6 text-lg">
+                        老闆想知道哪一類的產品賣得最好？透過拖曳欄位，兩秒鐘就能算出各類別的總業績。
+                    </p>
+                    
+                    <div class="bg-white p-6 rounded-xl border border-slate-200 shadow-sm">
+                        <h4 class="font-bold text-slate-800 mb-4 flex items-center">
+                            <i data-lucide="layout-template" class="w-5 h-5 mr-2 text-excel-600"></i>
+                            欄位配置圖
+                        </h4>
+                        <!-- Mockup of Pivot Fields -->
+                        <div class="grid grid-cols-2 gap-4 text-sm">
+                            <div class="border-2 border-dashed border-slate-300 rounded-lg p-4 h-32 flex flex-col items-center justify-center bg-slate-50 text-slate-400">
+                                <span>篩選 (Filters)</span>
+                            </div>
+                            <div class="border-2 border-dashed border-slate-300 rounded-lg p-4 h-32 flex flex-col items-center justify-center bg-slate-50 text-slate-400">
+                                <span>欄 (Columns)</span>
+                            </div>
+                            <div class="border-2 border-excel-200 bg-excel-50 rounded-lg p-4 h-32 flex flex-col items-center justify-center relative">
+                                <span class="text-excel-800 font-bold mb-2">列 (Rows)</span>
+                                <div class="bg-white px-3 py-1 rounded shadow text-slate-700 text-xs font-medium border border-slate-200">
+                                    產品類別
+                                </div>
+                            </div>
+                            <div class="border-2 border-excel-200 bg-excel-50 rounded-lg p-4 h-32 flex flex-col items-center justify-center relative">
+                                <span class="text-excel-800 font-bold mb-2">值 (Values)</span>
+                                <div class="bg-white px-3 py-1 rounded shadow text-slate-700 text-xs font-medium border border-slate-200">
+                                    銷售金額 (加總)
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="md:w-1/2 space-y-6">
+                    <!-- Step 1 -->
+                    <div class="step-card bg-white p-6 rounded-xl border border-slate-200 transition-all duration-300">
+                        <div class="flex items-start">
+                            <span class="flex-shrink-0 w-8 h-8 flex items-center justify-center bg-slate-800 text-white rounded-full font-bold text-sm mr-4">1</span>
+                            <div>
+                                <h3 class="text-lg font-bold text-slate-800">插入樞紐分析表</h3>
+                                <p class="text-slate-600 mt-1">選取你的資料範圍（Ctrl+A），點擊上方選單的 <span class="font-mono bg-slate-100 px-1 rounded">插入</span> > <span class="font-mono bg-slate-100 px-1 rounded">樞紐分析表</span>。建議選擇「新工作表」。</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Step 2 -->
+                    <div class="step-card bg-white p-6 rounded-xl border border-slate-200 transition-all duration-300">
+                        <div class="flex items-start">
+                            <span class="flex-shrink-0 w-8 h-8 flex items-center justify-center bg-slate-800 text-white rounded-full font-bold text-sm mr-4">2</span>
+                            <div>
+                                <h3 class="text-lg font-bold text-slate-800">設定列 (Rows)</h3>
+                                <p class="text-slate-600 mt-1">在右側的欄位清單中，找到「產品類別」或「產品名稱」，按住滑鼠左鍵將其拖曳到下方的 <strong>[列]</strong> 區域。</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Step 3 -->
+                    <div class="step-card bg-white p-6 rounded-xl border border-slate-200 transition-all duration-300">
+                        <div class="flex items-start">
+                            <span class="flex-shrink-0 w-8 h-8 flex items-center justify-center bg-slate-800 text-white rounded-full font-bold text-sm mr-4">3</span>
+                            <div>
+                                <h3 class="text-lg font-bold text-slate-800">設定值 (Values)</h3>
+                                <p class="text-slate-600 mt-1">將「銷售金額」欄位拖曳到 <strong>[值]</strong> 區域。Excel 預設會進行「加總」。</p>
+                                <div class="mt-3 bg-yellow-50 text-yellow-800 p-3 rounded-md text-sm">
+                                    <i data-lucide="lightbulb" class="inline w-4 h-4 mr-1"></i> 小技巧：如果出現的是「計數」而非「加總」，表示你的金額欄位可能有文字或空白。
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Step 4 -->
+                    <div class="step-card bg-white p-6 rounded-xl border border-slate-200 transition-all duration-300">
+                        <div class="flex items-start">
+                            <span class="flex-shrink-0 w-8 h-8 flex items-center justify-center bg-slate-800 text-white rounded-full font-bold text-sm mr-4">4</span>
+                            <div>
+                                <h3 class="text-lg font-bold text-slate-800">排序與美化</h3>
+                                <p class="text-slate-600 mt-1">點擊表格中的數字，右鍵選擇「數值格式」設定千分位符號。若要看排名，右鍵選擇「排序」>「從最大到最小」。</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Tutorial 2: By Month (Date Grouping) -->
+    <section id="month" class="py-20 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-12">
+                <span class="text-excel-600 font-bold tracking-wider uppercase text-sm">Case 02</span>
+                <h2 class="text-3xl md:text-4xl font-bold text-slate-900 mt-2">按「月份」分析銷售趨勢</h2>
+                <p class="mt-4 text-slate-600 max-w-2xl mx-auto">
+                    原始資料只有「2023/01/05」這種日期，如何變成「一月」、「二月」的彙總報表？秘密就在「組成群組」。
+                </p>
+            </div>
+
+            <div class="grid md:grid-cols-2 gap-12 items-center">
+                <div class="order-2 md:order-1 space-y-8">
+                    <div class="flex gap-4">
+                        <div class="flex-shrink-0 mt-1">
+                            <div class="w-10 h-10 rounded-full bg-excel-100 flex items-center justify-center text-excel-700">
+                                <i data-lucide="mouse-pointer-click" class="w-5 h-5"></i>
+                            </div>
+                        </div>
+                        <div>
+                            <h3 class="text-xl font-bold text-slate-800">1. 拖曳日期欄位</h3>
+                            <p class="text-slate-600 mt-2">將「訂單日期」拖曳到 <strong>[列]</strong> 區域。Excel 2016 以上版本通常會自動幫你分組成年、季、月。</p>
+                        </div>
+                    </div>
+
+                    <div class="flex gap-4">
+                        <div class="flex-shrink-0 mt-1">
+                            <div class="w-10 h-10 rounded-full bg-excel-100 flex items-center justify-center text-excel-700">
+                                <i data-lucide="layers" class="w-5 h-5"></i>
+                            </div>
+                        </div>
+                        <div>
+                            <h3 class="text-xl font-bold text-slate-800">2. 手動組成群組 (關鍵步驟)</h3>
+                            <p class="text-slate-600 mt-2">
+                                如果沒有自動分組，請針對樞紐分析表內的任一日期按 <span class="font-bold text-slate-800">滑鼠右鍵</span>，選擇 <span class="font-bold text-excel-600">「組成群組 (Group)」</span>。
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="flex gap-4">
+                        <div class="flex-shrink-0 mt-1">
+                            <div class="w-10 h-10 rounded-full bg-excel-100 flex items-center justify-center text-excel-700">
+                                <i data-lucide="check-square" class="w-5 h-5"></i>
+                            </div>
+                        </div>
+                        <div>
+                            <h3 class="text-xl font-bold text-slate-800">3. 選擇時間單位</h3>
+                            <p class="text-slate-600 mt-2">
+                                在彈出的視窗中，點選「月」與「年」（變藍色即選取）。按下確定，報表就會瞬間變成按月彙總了！
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="order-1 md:order-2 bg-slate-50 p-6 rounded-2xl border border-slate-200">
+                    <!-- Visual Representation of Grouping Dialog -->
+                    <div class="bg-white rounded-lg shadow-lg border border-slate-300 max-w-xs mx-auto overflow-hidden">
+                        <div class="bg-slate-100 px-4 py-2 border-b border-slate-300 flex justify-between items-center">
+                            <span class="text-sm font-semibold text-slate-700">組成群組</span>
+                            <div class="w-3 h-3 bg-red-400 rounded-full"></div>
+                        </div>
+                        <div class="p-4 space-y-3">
+                            <div class="text-xs text-slate-500">
+                                <p>起始於: 2023/01/01</p>
+                                <p>結束於: 2023/12/31</p>
+                            </div>
+                            <div class="text-sm font-medium text-slate-700">依據:</div>
+                            <div class="border border-slate-300 h-32 overflow-y-auto">
+                                <div class="px-2 py-1 hover:bg-blue-100 cursor-pointer">秒</div>
+                                <div class="px-2 py-1 hover:bg-blue-100 cursor-pointer">分</div>
+                                <div class="px-2 py-1 hover:bg-blue-100 cursor-pointer">時</div>
+                                <div class="px-2 py-1 hover:bg-blue-100 cursor-pointer">日</div>
+                                <div class="px-2 py-1 bg-blue-600 text-white cursor-pointer">月</div>
+                                <div class="px-2 py-1 hover:bg-blue-100 cursor-pointer">季</div>
+                                <div class="px-2 py-1 bg-blue-600 text-white cursor-pointer">年</div>
+                            </div>
+                        </div>
+                        <div class="px-4 py-3 bg-slate-50 flex justify-end gap-2">
+                            <button class="px-3 py-1 bg-slate-200 text-xs rounded hover:bg-slate-300">取消</button>
+                            <button class="px-3 py-1 bg-blue-600 text-white text-xs rounded hover:bg-blue-700">確定</button>
+                        </div>
+                    </div>
+                    <p class="text-center text-sm text-slate-500 mt-4">▲ 選擇「月」與「年」進行跨年度分析</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Troubleshooting Section -->
+    <section id="troubleshoot" class="py-20 bg-red-50">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-10">
+                <h2 class="text-3xl font-bold text-red-700 flex items-center justify-center gap-2">
+                    <i data-lucide="alert-triangle"></i> 常見問題：為什麼無法依日期分組？
+                </h2>
+                <p class="mt-4 text-slate-700">
+                    按右鍵時，發現「組成群組」反白無法點選，或系統跳出「無法將選取範圍組成群組」？
+                </p>
+            </div>
+
+            <div class="bg-white rounded-xl shadow-sm border-l-4 border-red-500 overflow-hidden">
+                <div class="p-6 md:p-8">
+                    <h3 class="text-xl font-bold text-slate-900 mb-4">兇手通常是：日期格式錯誤</h3>
+                    <p class="text-slate-600 mb-6">
+                        Excel 非常嚴格。只要欄位中有一個儲存格是「文字格式」的日期（看起來像日期，但靠左對齊），或是空白格、文字（如"待定"），整個欄位就無法分組。
+                    </p>
+
+                    <div class="space-y-4">
+                        <div class="bg-slate-50 p-4 rounded-lg">
+                            <h4 class="font-bold text-slate-800 mb-2">解決方法 1：資料剖析 (最快)</h4>
+                            <ol class="list-decimal list-inside text-slate-600 space-y-1">
+                                <li>選取整欄日期資料。</li>
+                                <li>點選上方選單 <strong>[資料]</strong> > <strong>[資料剖析]</strong>。</li>
+                                <li>直接按兩次「下一步」，在步驟三選擇 <strong>[日期] (YMD)</strong>。</li>
+                                <li>按下完成。這會強制將文字轉為真正的日期格式。</li>
+                                <li>回到樞紐分析表，右鍵點選 <strong>[重新整理]</strong>。</li>
+                            </ol>
+                        </div>
+
+                        <div class="bg-slate-50 p-4 rounded-lg">
+                            <h4 class="font-bold text-slate-800 mb-2">解決方法 2：檢查空白或異常值</h4>
+                            <ul class="list-disc list-inside text-slate-600 space-y-1">
+                                <li>利用篩選功能，檢查日期欄位最下方是否有「空白」或無法辨識的文字。</li>
+                                <li>將這些異常資料修正或刪除，再重新整理樞紐分析表。</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-slate-900 text-slate-300 py-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid md:grid-cols-2 gap-8">
+                <div>
+                    <div class="flex items-center gap-2 text-white text-xl font-bold mb-4">
+                        <i data-lucide="sheet" class="text-excel-500"></i> PivotMastery
+                    </div>
+                    <p class="text-slate-400 max-w-sm">
+                        專為初學者設計的 Excel 樞紐分析表指南。掌握數據，提升效率。
+                    </p>
+                </div>
+                <div class="md:text-right">
+                    <h4 class="text-white font-bold mb-4">進階技巧</h4>
+                    <ul class="space-y-2 text-slate-400">
+                        <li><a href="#" class="hover:text-excel-400 transition">如何計算年增率 (YoY)</a></li>
+                        <li><a href="#" class="hover:text-excel-400 transition">使用切片器 (Slicers) 美化報表</a></li>
+                        <li><a href="#" class="hover:text-excel-400 transition">計算佔總數百分比</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="border-t border-slate-800 mt-12 pt-8 text-center text-sm text-slate-500">
+                &copy; 2024 Excel Pivot Mastery Tutorial. Designed for educational purposes.
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Initialize Lucide Icons
+        lucide.createIcons();
+
+        // Mobile Menu Toggle
+        const btn = document.getElementById('mobile-menu-btn');
+        const menu = document.getElementById('mobile-menu');
+
+        btn.addEventListener('click', () => {
+            menu.classList.toggle('hidden');
+        });
+
+        // Close mobile menu when clicking a link
+        document.querySelectorAll('#mobile-menu a').forEach(link => {
+            link.addEventListener('click', () => {
+                menu.classList.add('hidden');
+            });
+        });
+    </script>
+</body>
+</html>
